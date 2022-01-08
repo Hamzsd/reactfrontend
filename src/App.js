@@ -1,11 +1,7 @@
-import {BiArchive} from "react-icons/bi"
-
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <h1><BiArchive/>Hamza</h1>
-    </div>
-  );
+    <h1 className="text-3xl font-bold underline">
+      Hello world!
+    </h1>
+  )
 }
-
-export default App;
