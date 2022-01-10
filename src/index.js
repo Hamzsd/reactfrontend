@@ -11,7 +11,7 @@ import {
 } from "@apollo/client";
 
 const httpLink = createHttpLink({
-  uri: "https://api.mocki.io/v2/c4d7a195/graphql",
+  uri: "http://192.168.1.110:5107/graphql",
 });
 
 const client = new ApolloClient({

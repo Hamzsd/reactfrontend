@@ -1,129 +1,48 @@
-// import { useQuery, gql } from '@apollo/client';
-
-// const FEED_QUERY = gql`{
-//   user(id: "4dc70521-22bb-4396-b37a-4a927c66d43b")  {
-//       id
-//       email
-//       name
-//   }
-// }`;
-
-// export default function App() {
-//   const { loading, error, data } = useQuery(FEED_QUERY);
-//   if (loading) return <p>Loading...</p>;
-//   if (error) return <p>Error :(</p>;
-//   return (
-//     <div className="container">
-//       <h1 className="text-3xl font-bold underline">Hamza</h1>
-//       <div className="row">
-//         <h2>UserID: {data.user.id}</h2>
-//       </div>
-//     </div>
-
-
-//   )
-// }
 import React from 'react'
-import Table, { AvatarCell, SelectColumnFilter, StatusPill } from './components/Table'  // new
+import Table from './components/Table' 
+import { useQuery, gql } from '@apollo/client';
 
-const getData = () => {
-  const data = [
-    {
-      name: 'Jane Cooper',
-      email: 'jane.cooper@example.com',
-      title: 'Regional Paradigm Technician',
-      department: 'Optimization',
-      status: 'Active',
-      role: 'Admin',
-      age: 27,
-      imgUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-    },
-    {
-      name: 'Cody Fisher',
-      email: 'cody.fisher@example.com',
-      title: 'Product Directives Officer',
-      department: 'Intranet',
-      status: 'Inactive',
-      role: 'Owner',
-      age: 43,
-      imgUrl: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-    },
-    {
-      name: 'Esther Howard',
-      email: 'esther.howard@example.com',
-      title: 'Forward Response Developer',
-      department: 'Directives',
-      status: 'Active',
-      role: 'Member',
-      age: 32,
-      imgUrl: 'https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-    },
-    {
-      name: 'Jenny Wilson',
-      email: 'jenny.wilson@example.com',
-      title: 'Central Security Manager',
-      department: 'Program',
-      status: 'Offline',
-      role: 'Member',
-      age: 29,
-      imgUrl: 'https://images.unsplash.com/photo-1498551172505-8ee7ad69f235?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-    },
-    {
-      name: 'Kristin Watson',
-      email: 'kristin.watson@example.com',
-      title: 'Lean Implementation Liaison',
-      department: 'Mobility',
-      status: 'Inactive',
-      role: 'Admin',
-      age: 36,
-      imgUrl: 'https://images.unsplash.com/photo-1532417344469-368f9ae6d187?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-    },
-    {
-      name: 'Cameron Williamson',
-      email: 'cameron.williamson@example.com',
-      title: 'Internal Applications Engineer',
-      department: 'Security',
-      status: 'Active',
-      role: 'Member',
-      age: 24,
-      imgUrl: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-    },
-  ]
-  return [...data, ...data, ...data]
-}
+const FEED_QUERY = gql`{
+  products {
+    product
+    nativeId
+    state
+    description
+    comment
+  }
+}`;
 
 function App() {
-
   const columns = React.useMemo(() => [
     {
-      Header: "Name",
-      accessor: 'name',
-      Cell: AvatarCell,
-      imgAccessor: "imgUrl",
-      emailAccessor: "email",
+      Header: "Product",
+      accessor: 'product',
+ 
     },
     {
-      Header: "Title",
-      accessor: 'title',
+      Header: "NativeId",
+      accessor: 'nativeId',
     },
     {
-      Header: "Status",
-      accessor: 'status',
-      Cell: StatusPill,
+      Header: "State",
+      accessor: 'state',
     },
     {
-      Header: "Age",
-      accessor: 'age',
+      Header: "Description",
+      accessor: 'description',
     },
     {
-      Header: "Role",
-      accessor: 'role',
-      Filter: SelectColumnFilter,  // new
-      filter: 'includes',
+      Header: "Comment UL",
+      accessor: 'comment',
     },
   ], [])
 
-  const data = React.useMemo(() => getData(), [])
+  const { loading, error, data } = useQuery(FEED_QUERY);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
+  const propertyVal = Object.values(data).flatMap(arr => arr)
+  console.log("this",propertyVal)
+  console.log("that",data)
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900">
@@ -132,11 +51,10 @@ function App() {
           <h1 className="text-xl font-semibold">IG Creator</h1>
         </div>
         <div className="mt-6">
-          <Table columns={columns} data={data} />
+          <Table columns={columns} data={propertyVal} />
         </div>
       </main>
     </div>
   );
 }
-
 export default App;
